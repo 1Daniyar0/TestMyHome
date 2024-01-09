@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "TestMyHome"
 include(":app")
- 
+include(":data")
+include(":domain")
