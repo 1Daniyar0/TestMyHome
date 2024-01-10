@@ -1,6 +1,6 @@
 package com.example.testmyhome
 
-import android.content.res.Resources.Theme
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,6 +25,7 @@ import com.example.testmyhome.screens.CamerasScreen
 import com.example.testmyhome.screens.DoorsScreen
 import com.example.testmyhome.screens.TopBar
 import com.example.testmyhome.ui.theme.TestMyHomeTheme
+import com.example.testmyhome.ui.theme.Typography
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +43,10 @@ class MainActivity : ComponentActivity() {
                         val navController = rememberNavController()
 
                         Text(text = getString(R.string.TopTitleText),
+                            style = Typography.bodyLarge,
                             modifier = Modifier
-                                .align(Alignment.CenterHorizontally))
+                                .align(Alignment.CenterHorizontally)
+                                .padding(vertical = 22.dp))
                         TopBar(navController = navController)
                         MyNavGraph(navController = navController)
                     }

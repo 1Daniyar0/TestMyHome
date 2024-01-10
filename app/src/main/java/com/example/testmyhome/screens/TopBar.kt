@@ -28,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.testmyhome.R
 import com.example.testmyhome.ui.theme.ContentColor
 import com.example.testmyhome.ui.theme.TestMyHomeTheme
+import com.example.testmyhome.ui.theme.Typography
 
 
 @Composable
@@ -56,7 +57,7 @@ fun TopBar(navController: NavHostController){
                 {
                     Text(
                         text = stringResource(id = R.string.CamerasTitle),
-                        fontSize = 17.sp,
+                        style = Typography.bodyMedium,
                         color = Color.Black
                     )
 
@@ -91,7 +92,7 @@ fun TopBar(navController: NavHostController){
                 {
                     Text(
                         text = stringResource(id = R.string.DoorsTitle),
-                        fontSize = 17.sp,
+                        style = Typography.bodyMedium,
                         color = Color.Black)
 
                 }

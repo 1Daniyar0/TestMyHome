@@ -1,6 +1,7 @@
 package com.example.testmyhome.screens
 
 import android.graphics.drawable.shapes.Shape
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,9 +23,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +40,7 @@ import com.example.domain.models.Camera
 import com.example.testmyhome.R
 import com.example.testmyhome.ui.theme.PrimaryBackground
 import com.example.testmyhome.ui.theme.TestMyHomeTheme
-
+import com.example.testmyhome.ui.theme.Typography
 
 
 @Composable
@@ -49,17 +53,10 @@ fun CamerasScreen(){
     ) {
 
         val list = listOf(
-            Camera("Camera 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true,false),
+            Camera("Camera 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true,true),
             Camera("Camera 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true,false),
             Camera("Camera 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true,false)
         )
-        Text(
-            text = "Гостиная",
-            fontSize = 21.sp,
-            modifier = Modifier
-                .padding(vertical = 21.dp)
-            )
-
         ListOfCameras(list)
     }
 }
@@ -70,6 +67,7 @@ fun ListOfCameras(list: List<Camera>){
         verticalArrangement = Arrangement
             .spacedBy(11.dp),
         modifier = Modifier
+            .padding(vertical = 8.dp)
             .fillMaxSize()
             .background(Color.Transparent)
 
@@ -86,6 +84,14 @@ fun ListOfCameras(list: List<Camera>){
 
 @Composable
 fun CameraItem(item: Camera){
+    if (!item.room.isNullOrEmpty()){
+        Text(
+            text = item.room,
+            style = Typography.bodyLarge,
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+        )
+    }
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -95,15 +101,32 @@ fun CameraItem(item: Camera){
             .fillMaxSize()
 
     ) {
-        AsyncImage(
-            model = item.snapshot,
-            contentDescription ="Camera Preview",
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier
-                .fillMaxSize())
+        Box(){
+            AsyncImage(
+                model = item.snapshot,
+                contentDescription ="Camera Preview",
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .fillMaxSize())
+            if(item.rec){
+                Image(painter = painterResource(id = R.drawable.rec),
+                    contentDescription = "Recording Image",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.TopStart))
+            }
+            if(item.favorites){
+                Image(painter = painterResource(id = R.drawable.star),
+                    contentDescription = "Recording Image",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.TopEnd))
+            }
+        }
+
         Text(
             text = item.name,
-            fontSize = 17.sp,
+            style = Typography.bodyMedium,
             modifier = Modifier
                 .padding(horizontal = 8.dp, vertical = 18.dp))
     }
