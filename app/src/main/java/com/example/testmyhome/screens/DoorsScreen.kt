@@ -18,6 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.domain.models.Camera
 import com.example.domain.models.Door
@@ -31,6 +33,7 @@ fun DoorsScreen(){
         modifier = Modifier
             .fillMaxSize()
             .background(PrimaryBackground)
+            .padding(horizontal = 21.dp)
     ) {
         val list = listOf(
             Door("Door 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true),
@@ -45,7 +48,7 @@ fun DoorsScreen(){
 fun ListOfDoors(list: List<Door>){
     LazyColumn(
         verticalArrangement = Arrangement
-            .spacedBy(8.dp),
+            .spacedBy(11.dp),
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Transparent)
@@ -89,6 +92,7 @@ fun DoorItem(item: Door){
 @Composable
 fun DoorsScreenPreview() {
     TestMyHomeTheme {
+        val navController = rememberNavController()
         DoorsScreen()
     }
 }

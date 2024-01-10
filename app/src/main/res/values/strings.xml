@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TestMyHome</string>
+    <string name="CamerasTitle">Камеры</string>
+    <string name="DoorsTitle">Двери</string>
+    <string name="TopTitleText">Мой дом</string>
+
 </resources>
