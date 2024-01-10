@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -64,7 +65,7 @@ fun TopBar(navController: NavHostController){
                 }
                 Divider(
                     color = if(route == "camera") {
-                        ContentColor
+                        MaterialTheme.colorScheme.primary
                     }
                     else {
                         Color.LightGray },

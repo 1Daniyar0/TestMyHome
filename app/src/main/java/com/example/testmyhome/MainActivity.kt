@@ -23,32 +23,34 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.testmyhome.screens.CamerasScreen
 import com.example.testmyhome.screens.DoorsScreen
+import com.example.testmyhome.screens.MyHomeViewModel
 import com.example.testmyhome.screens.TopBar
+import com.example.testmyhome.ui.theme.PrimaryBackground
 import com.example.testmyhome.ui.theme.TestMyHomeTheme
 import com.example.testmyhome.ui.theme.Typography
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TestMyHomeTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier
                         .fillMaxSize(),
 
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val navController = rememberNavController()
+                    val viewModel:MyHomeViewModel = koinViewModel()
                     Column {
-                        val navController = rememberNavController()
-
                         Text(text = getString(R.string.TopTitleText),
                             style = Typography.bodyLarge,
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally)
                                 .padding(vertical = 22.dp))
                         TopBar(navController = navController)
-                        MyNavGraph(navController = navController)
+                        MyNavGraph(navController = navController,viewModel)
                     }
 
                 }
@@ -58,10 +60,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyNavGraph(navController: NavHostController) {
+fun MyNavGraph(navController: NavHostController,viewModel: MyHomeViewModel) {
     NavHost(navController = navController, startDestination = "camera") {
-        composable("camera") { CamerasScreen() }
-        composable("door") { DoorsScreen() }
+        composable("camera") { CamerasScreen(viewModel) }
+        //composable("door") { DoorsScreen() }
     }
 }
 

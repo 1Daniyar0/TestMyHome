@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,6 +32,7 @@ import com.example.domain.models.Camera
 import com.example.domain.models.Door
 import com.example.testmyhome.R
 import com.example.testmyhome.ui.theme.PrimaryBackground
+import com.example.testmyhome.ui.theme.SecondaryBackground
 import com.example.testmyhome.ui.theme.TestMyHomeTheme
 import com.example.testmyhome.ui.theme.Typography
 
@@ -73,9 +75,10 @@ fun ListOfDoors(list: List<Door>){
 fun DoorItem(item: Door){
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = SecondaryBackground
         ),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(2.dp),
         modifier = Modifier
             .fillMaxSize()
 

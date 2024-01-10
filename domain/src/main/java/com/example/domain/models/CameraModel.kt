@@ -1,21 +1,34 @@
 package com.example.domain.models
 
+
+
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
+
+
+@Serializable
 data class CamerasResponse(
-    val success: Boolean? = true,
-    val data: CamerasData
+    @SerializedName("success" ) var success : Boolean? = null,
+    @SerializedName("data"    ) var data    : Data?    = Data()
 )
 
-data class CamerasData(
-    val room: List<String>,
-    val cameras: List<Camera>
+@Serializable
+data class Data (
+
+    @SerializedName("room"    ) var room    : ArrayList<String>  = arrayListOf(),
+    @SerializedName("cameras" ) var cameras : ArrayList<Camera> = arrayListOf()
+
 )
 
-data class Camera(
-    val name: String,
-    val snapshot: String,
-    val room: String,
-    val id: Int,
-    val favorites: Boolean,
-    val rec: Boolean
+@Serializable
+data class Camera (
+
+    @SerializedName("name"      ) var name      : String?  = null,
+    @SerializedName("snapshot"  ) var snapshot  : String?  = null,
+    @SerializedName("room"      ) var room      : String?  = null,
+    @SerializedName("id"        ) var id        : Int?     = null,
+    @SerializedName("favorites" ) var favorites : Boolean? = null,
+    @SerializedName("rec"       ) var rec       : Boolean? = null
+
 )
 

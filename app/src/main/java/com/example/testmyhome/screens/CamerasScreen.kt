@@ -19,10 +19,13 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,25 +42,35 @@ import coil.compose.AsyncImage
 import com.example.domain.models.Camera
 import com.example.testmyhome.R
 import com.example.testmyhome.ui.theme.PrimaryBackground
+import com.example.testmyhome.ui.theme.SecondaryBackground
 import com.example.testmyhome.ui.theme.TestMyHomeTheme
 import com.example.testmyhome.ui.theme.Typography
 
 
 @Composable
-fun CamerasScreen(){
+fun CamerasScreen(viewModel: MyHomeViewModel){
+
+    val cameraResponse = viewModel.camerasLiveData.observeAsState()
+
+    LaunchedEffect(Unit){
+        viewModel.getCameras()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(PrimaryBackground)
             .padding(horizontal = 21.dp)
     ) {
+       if (cameraResponse.value?.data?.cameras != null){
+           ListOfCameras(cameraResponse.value?.data?.cameras!!)
+       }
+        else{
+           ListOfCameras(listOf(Camera("","","",0,false,false)))
+       }
 
-        val list = listOf(
-            Camera("Camera 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true,true),
-            Camera("Camera 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true,false),
-            Camera("Camera 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true,false)
-        )
-        ListOfCameras(list)
+
+
     }
 }
 
@@ -86,7 +99,7 @@ fun ListOfCameras(list: List<Camera>){
 fun CameraItem(item: Camera){
     if (!item.room.isNullOrEmpty()){
         Text(
-            text = item.room,
+            text = item.room!!,
             style = Typography.bodyLarge,
             modifier = Modifier
                 .padding(vertical = 12.dp)
@@ -94,9 +107,10 @@ fun CameraItem(item: Camera){
     }
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = SecondaryBackground
         ),
-        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(2.dp),
+        shape = RoundedCornerShape(12.dp),
         modifier = Modifier
             .fillMaxSize()
 
@@ -108,14 +122,14 @@ fun CameraItem(item: Camera){
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxSize())
-            if(item.rec){
+            if(item.rec!!){
                 Image(painter = painterResource(id = R.drawable.rec),
                     contentDescription = "Recording Image",
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.TopStart))
             }
-            if(item.favorites){
+            if(item.favorites!!){
                 Image(painter = painterResource(id = R.drawable.star),
                     contentDescription = "Recording Image",
                     modifier = Modifier
@@ -125,7 +139,7 @@ fun CameraItem(item: Camera){
         }
 
         Text(
-            text = item.name,
+            text = item.name!!,
             style = Typography.bodyMedium,
             modifier = Modifier
                 .padding(horizontal = 8.dp, vertical = 18.dp))
@@ -140,6 +154,6 @@ fun CameraItem(item: Camera){
 fun CamerasScreenPreview() {
     TestMyHomeTheme {
         val navController = rememberNavController()
-        CamerasScreen()
+
     }
 }
