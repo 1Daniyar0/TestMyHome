@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import kotlinx.serialization.Serializable
-import org.mongodb.kbson.BsonObjectId
-import org.mongodb.kbson.ObjectId
 
 
 @Serializable
@@ -36,13 +34,12 @@ data class Camera (
 
 )
 
-class CamerasRealmModel(): RealmObject {
+class CamerasDataBaseModel(): RealmObject {
     @PrimaryKey
-    var _id: ObjectId = ObjectId()
+    var id: Int = 0
     var name: String  = ""
     var snapshot: String  = ""
     var room: String  = ""
-    var id: String = ""
     var favorites: Boolean = false
     var rec: Boolean = false
 }

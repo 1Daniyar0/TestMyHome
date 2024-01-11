@@ -3,10 +3,8 @@ package com.example.data.repositoryImpl
 import android.util.Log
 import com.example.data.remote.ApiClient
 import com.example.data.remote.ApiRoutes
-import com.example.domain.models.Camera
-import com.example.domain.models.CamerasRealmModel
 import com.example.domain.models.Door
-import com.example.domain.models.DoorsRealmModel
+import com.example.domain.models.DoorsDataBaseModel
 import com.example.domain.models.DoorsResponse
 import com.example.domain.repository.DoorsRepository
 import io.ktor.client.call.body
@@ -36,15 +34,15 @@ class DoorsRepositoryImpl:DoorsRepository {
 
     override suspend fun fetchDoorsDataFromApi(data: List<Door>): Boolean {
         return try {
-            val config = RealmConfiguration.create(schema = setOf(DoorsRealmModel::class))
+            val config = RealmConfiguration.create(schema = setOf(DoorsDataBaseModel::class))
             val realm: Realm = Realm.open(config)
             data.forEach{data->
                 realm.writeBlocking {
-                    copyToRealm(DoorsRealmModel().apply {
+                    copyToRealm(DoorsDataBaseModel().apply {
                         name = data.name.toString()
                         snapshot  = data.snapshot.toString()
                         room = data.room.toString()
-                        id = data.id.toString()
+                        id = data.id!!
                         favorites = data.favorites!!
                     })
                 }
@@ -58,14 +56,14 @@ class DoorsRepositoryImpl:DoorsRepository {
         }
     }
 
-    override suspend fun updateDoorsDataInDb(data: DoorsRealmModel) {
+    override suspend fun updateDoorsDataInDb(data: DoorsDataBaseModel) {
         TODO("Not yet implemented")
     }
 
     override suspend fun getDoorsFromDb(): List<Door> {
-        val config = RealmConfiguration.create(schema = setOf(DoorsRealmModel::class))
+        val config = RealmConfiguration.create(schema = setOf(DoorsDataBaseModel::class))
         val realm: Realm = Realm.open(config)
-        val items: RealmResults<DoorsRealmModel> = realm.query<DoorsRealmModel>().find()
+        val items: RealmResults<DoorsDataBaseModel> = realm.query<DoorsDataBaseModel>().find()
         val listCameras: MutableList<Door> = mutableListOf()
         items.forEach {
             listCameras.add(
@@ -73,7 +71,7 @@ class DoorsRepositoryImpl:DoorsRepository {
                     name = it.name,
                     snapshot = it.snapshot,
                     room = it.room,
-                    id = it.id.toInt(),
+                    id = it.id,
                     favorites = it.favorites,
                 )
             )

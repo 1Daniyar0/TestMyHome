@@ -4,8 +4,6 @@ import com.google.gson.annotations.SerializedName
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import kotlinx.serialization.Serializable
-import org.mongodb.kbson.BsonObjectId
-import org.mongodb.kbson.ObjectId
 
 @Serializable
 data class DoorsResponse(
@@ -22,12 +20,11 @@ data class Door(
     @SerializedName("favorites" ) var favorites : Boolean? = null
 )
 
-class DoorsRealmModel: RealmObject {
+class DoorsDataBaseModel: RealmObject {
     @PrimaryKey
-    var _id: ObjectId = BsonObjectId()
+    var id: Int = 0
     var name: String  = ""
     var snapshot: String  = ""
     var room: String  = ""
-    var id: String = ""
     var favorites: Boolean = false
 }

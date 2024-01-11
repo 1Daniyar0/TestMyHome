@@ -4,10 +4,8 @@ import android.util.Log
 import com.example.data.remote.ApiClient
 import com.example.data.remote.ApiRoutes
 import com.example.domain.models.Camera
-import com.example.domain.models.CamerasRealmModel
+import com.example.domain.models.CamerasDataBaseModel
 import com.example.domain.models.CamerasResponse
-import com.example.domain.models.DoorsRealmModel
-import com.example.domain.models.DoorsResponse
 import com.example.domain.repository.CamerasRepository
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -39,15 +37,15 @@ class CamerasRepositoryImpl : CamerasRepository {
 
     override suspend fun fetchCamerasDataFromApi(data: List<Camera>): Boolean {
         return try {
-            val config = RealmConfiguration.create(schema = setOf(CamerasRealmModel::class))
+            val config = RealmConfiguration.create(schema = setOf(CamerasDataBaseModel::class))
             val realm: Realm = Realm.open(config)
             data.forEach{data->
                 realm.writeBlocking {
-                    copyToRealm(CamerasRealmModel().apply {
+                    copyToRealm(CamerasDataBaseModel().apply {
                         name = data.name.toString()
                         snapshot  = data.snapshot.toString()
                         room = data.room.toString()
-                        id = data.id.toString()
+                        id = data.id!!
                         favorites = data.favorites!!
                         rec = data.rec!!
                     })
@@ -64,14 +62,19 @@ class CamerasRepositoryImpl : CamerasRepository {
         }
     }
 
-    override suspend fun updateCamerasDataDb(data: CamerasRealmModel) {
-        TODO("Not yet implemented")
+    override suspend fun updateCamerasDataDb(camera: Camera) {
+        val config = RealmConfiguration.create(schema = setOf(CamerasDataBaseModel::class))
+        val realm: Realm = Realm.open(config)
+        realm.write {
+            val cameraDb = query<CamerasDataBaseModel>("id == ${camera.id}").find().first()
+            cameraDb.favorites = camera.favorites!!
+        }
     }
 
     override suspend fun getCamerasFromDb():List<Camera> {
-        val config = RealmConfiguration.create(schema = setOf(CamerasRealmModel::class))
+        val config = RealmConfiguration.create(schema = setOf(CamerasDataBaseModel::class))
         val realm: Realm = Realm.open(config)
-        val items: RealmResults<CamerasRealmModel> = realm.query<CamerasRealmModel>().find()
+        val items: RealmResults<CamerasDataBaseModel> = realm.query<CamerasDataBaseModel>().find()
         val listCameras: MutableList<Camera> = mutableListOf()
         items.forEach {
             listCameras.add(
@@ -79,7 +82,7 @@ class CamerasRepositoryImpl : CamerasRepository {
                     name = it.name,
                     snapshot = it.snapshot,
                     room = it.room,
-                    id = it.id.toInt(),
+                    id = it.id,
                     favorites = it.favorites,
                     rec = it.rec
                 )

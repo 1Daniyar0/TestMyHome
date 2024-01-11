@@ -65,7 +65,7 @@ fun TopBar(navController: NavHostController){
                 }
                 Divider(
                     color = if(route == "camera") {
-                        MaterialTheme.colorScheme.primary
+                        ContentColor
                     }
                     else {
                         Color.LightGray },

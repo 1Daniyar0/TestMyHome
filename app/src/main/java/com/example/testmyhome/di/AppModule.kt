@@ -7,6 +7,7 @@ import com.example.domain.repository.CamerasRepository
 import com.example.domain.repository.DoorsRepository
 import com.example.domain.usecase.GetCamerasListUseCase
 import com.example.domain.usecase.GetDoorsUseCase
+import com.example.domain.usecase.UpdateCameraDbByIdUseCase
 import com.example.testmyhome.screens.MyHomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -14,12 +15,13 @@ import org.koin.dsl.module
 val appModule = module{
     factory { GetCamerasListUseCase(get()) }
     factory { GetDoorsUseCase(get()) }
+    factory { UpdateCameraDbByIdUseCase(get()) }
     single<CamerasRepository> { CamerasRepositoryImpl() }
     single<DoorsRepository> { DoorsRepositoryImpl() }
 }
 
 val viewModelModule = module {
-    viewModel {MyHomeViewModel(get(),get())}
+    viewModel {MyHomeViewModel(get(),get(),get())}
 }
 
 val netModule = module{
