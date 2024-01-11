@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     val viewModel:MyHomeViewModel = koinViewModel()
+
                     Column {
                         Text(text = getString(R.string.TopTitleText),
                             style = Typography.bodyLarge,

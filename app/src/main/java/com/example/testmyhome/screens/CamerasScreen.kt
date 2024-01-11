@@ -1,6 +1,7 @@
 package com.example.testmyhome.screens
 
 import android.graphics.drawable.shapes.Shape
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -40,11 +42,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.domain.models.Camera
+import com.example.domain.models.CamerasRealmModel
 import com.example.testmyhome.R
 import com.example.testmyhome.ui.theme.PrimaryBackground
 import com.example.testmyhome.ui.theme.SecondaryBackground
 import com.example.testmyhome.ui.theme.TestMyHomeTheme
 import com.example.testmyhome.ui.theme.Typography
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.query.RealmResults
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -54,7 +62,9 @@ fun CamerasScreen(viewModel: MyHomeViewModel){
 
     LaunchedEffect(Unit){
         viewModel.getCameras()
+
     }
+
 
     Column(
         modifier = Modifier
@@ -63,7 +73,14 @@ fun CamerasScreen(viewModel: MyHomeViewModel){
             .padding(horizontal = 21.dp)
     ) {
        if (cameraResponse.value?.data?.cameras != null){
-           ListOfCameras(cameraResponse.value?.data?.cameras!!)
+           val cameraList = cameraResponse.value?.data?.cameras
+           Log.d("Cmera", cameraList.toString())
+           LaunchedEffect(Unit){
+               //viewModel.addCamerasIntoDb(cameraList!!)
+           }
+
+           ListOfCameras(cameraList!!)
+
        }
         else{
            ListOfCameras(listOf(Camera("","","",0,false,false)))
@@ -85,8 +102,8 @@ fun ListOfCameras(list: List<Camera>){
             .background(Color.Transparent)
 
     ) {
-        items(list.size - 1){
-            CameraItem(list[it])
+        itemsIndexed(list){index, item ->
+            CameraItem(item)
         }
     }
 }

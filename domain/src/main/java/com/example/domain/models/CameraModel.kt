@@ -3,7 +3,11 @@ package com.example.domain.models
 
 
 import com.google.gson.annotations.SerializedName
+import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PrimaryKey
 import kotlinx.serialization.Serializable
+import org.mongodb.kbson.BsonObjectId
+import org.mongodb.kbson.ObjectId
 
 
 @Serializable
@@ -31,4 +35,17 @@ data class Camera (
     @SerializedName("rec"       ) var rec       : Boolean? = null
 
 )
+
+class CamerasRealmModel(): RealmObject {
+    @PrimaryKey
+    var _id: ObjectId = ObjectId()
+    var name: String  = ""
+    var snapshot: String  = ""
+    var room: String  = ""
+    var id: String = ""
+    var favorites: Boolean = false
+    var rec: Boolean = false
+}
+
+
 

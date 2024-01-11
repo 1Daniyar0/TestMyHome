@@ -46,9 +46,8 @@ fun DoorsScreen(){
             .padding(horizontal = 21.dp)
     ) {
         val list = listOf(
-            Door("Door 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","FIRST",1,true),
-            Door("Door 1","","FIRST",1,true),
-            Door("Door 1",null,"FIRST",1,true)
+            Door("Door 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","0",0,false),
+
         )
         ListOfDoors(list)
     }
@@ -96,7 +95,7 @@ fun DoorItem(item: Door){
                     .align(Alignment.CenterStart)
             ){
                 Text(
-                    text = item.name,
+                    text = item.name!!,
                     style = Typography.bodyMedium)
                 if (!item.snapshot.isNullOrEmpty()){
                     Text(
