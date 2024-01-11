@@ -1,11 +1,10 @@
 package com.example.domain.usecase
 
 import com.example.domain.models.Camera
-import com.example.domain.models.CamerasResponse
-import com.example.domain.repository.Repository
+import com.example.domain.repository.CamerasRepository
 
-class GetCamerasListUseCase(private val repository: Repository) {
+class GetCamerasListUseCase(private val camerasRepository: CamerasRepository) {
     suspend operator fun invoke():List<Camera>?{
-           return repository.getCamerasList()
+           return camerasRepository.getCamerasList()
     }
 }

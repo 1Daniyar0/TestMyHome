@@ -8,7 +8,7 @@ import com.example.domain.models.CamerasRealmModel
 import com.example.domain.models.CamerasResponse
 import com.example.domain.models.DoorsRealmModel
 import com.example.domain.models.DoorsResponse
-import com.example.domain.repository.Repository
+import com.example.domain.repository.CamerasRepository
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.realm.kotlin.Realm
@@ -17,7 +17,7 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.RealmResults
 
 
-class RepositoryImpl : Repository {
+class CamerasRepositoryImpl : CamerasRepository {
     override suspend fun getCamerasList(): List<Camera>? {
         val list = getCamerasFromDb()
         if (list.isEmpty()){
@@ -34,8 +34,6 @@ class RepositoryImpl : Repository {
         return null
     }
     override suspend fun getCamerasApi(): CamerasResponse = ApiClient.client.get(ApiRoutes.CAMERAS_GET).body()
-
-    override suspend fun getDoorsApi(): DoorsResponse = ApiClient.client.get(ApiRoutes.DOORS_GET).body()
 
 
     override suspend fun fetchCamerasDataFromApi(data: List<Camera>): Boolean {
@@ -65,7 +63,7 @@ class RepositoryImpl : Repository {
         }
     }
 
-    override suspend fun updateDataInDb(data: DoorsRealmModel) {
+    override suspend fun updateCamerasDataDb(data: CamerasRealmModel) {
         TODO("Not yet implemented")
     }
 
