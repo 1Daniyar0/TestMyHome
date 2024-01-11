@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.domain.models.Camera
+import com.example.domain.models.Door
 import com.example.testmyhome.R
 import com.example.testmyhome.ui.theme.PrimaryBackground
 import com.example.testmyhome.ui.theme.SecondaryBackground
@@ -62,7 +63,9 @@ fun CamerasScreen(viewModel: MyHomeViewModel){
     ) {
        if (cameraResponse.value != null){
            val cameraListDb = cameraResponse.value
-           ListOfCameras(cameraListDb!!,viewModel)
+           ListOfCameras(cameraListDb!!){
+               viewModel.updateCameraDb(it)
+           }
        }
         else{
 
@@ -71,7 +74,7 @@ fun CamerasScreen(viewModel: MyHomeViewModel){
 }
 
 @Composable
-fun ListOfCameras(list: List<Camera>,viewModel: MyHomeViewModel){
+fun ListOfCameras(list: List<Camera>,onFavoriteBtnClick: (Camera) -> Unit ){
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -79,13 +82,13 @@ fun ListOfCameras(list: List<Camera>,viewModel: MyHomeViewModel){
 
     ) {
         itemsIndexed(list){index, item ->
-            CameraItem(item,viewModel)
+            CameraItem(item,onFavoriteBtnClick)
         }
     }
 }
 
 @Composable
-fun CameraItem(item: Camera,viewModel: MyHomeViewModel){
+fun CameraItem(item: Camera,onFavoriteBtnClick: (Camera) -> Unit ){
     var moved by remember { mutableStateOf(false) }
     val pxToMove = with(LocalDensity.current) {
         -50.dp.toPx().roundToInt()
@@ -114,7 +117,7 @@ fun CameraItem(item: Camera,viewModel: MyHomeViewModel){
             onClick = {
                 val updateItem = item
                 updateItem.favorites = !item.favorites!!
-                viewModel.updateCameraDb(updateItem)
+                onFavoriteBtnClick(updateItem)
                 moved = !moved
                       },
             modifier = Modifier.align(Alignment.CenterEnd))
@@ -163,7 +166,7 @@ fun CameraItem(item: Camera,viewModel: MyHomeViewModel){
                 }
                 if(item.favorites!!){
                     Image(painter = painterResource(id = R.drawable.star),
-                        contentDescription = "Recording Image",
+                        contentDescription = "Favorit Image",
                         modifier = Modifier
                             .padding(8.dp)
                             .align(Alignment.TopEnd))

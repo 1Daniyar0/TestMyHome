@@ -12,12 +12,14 @@ import com.example.domain.models.DoorsResponse
 import com.example.domain.usecase.GetCamerasListUseCase
 import com.example.domain.usecase.GetDoorsUseCase
 import com.example.domain.usecase.UpdateCameraDbByIdUseCase
+import com.example.domain.usecase.UpdateDoorDbByIdUseCase
 import kotlinx.coroutines.launch
 
 class MyHomeViewModel(
     private val getCamerasListUseCase: GetCamerasListUseCase,
     private val getDoorsUseCase: GetDoorsUseCase,
-    private val updateCameraDbByIdUseCase: UpdateCameraDbByIdUseCase
+    private val updateCameraDbByIdUseCase: UpdateCameraDbByIdUseCase,
+    private val updateDoorDbByIdUseCase: UpdateDoorDbByIdUseCase
 ): ViewModel() {
     private val _camerasLiveData = MutableLiveData<List<Camera>>()
     private val _doorsLiveData = MutableLiveData<List<Door>>()
@@ -53,6 +55,18 @@ class MyHomeViewModel(
         viewModelScope.launch {
             try {
                 updateCameraDbByIdUseCase(camera)
+            }
+            catch (e: Exception){
+                Log.e("ViewModel Update Error",e.toString())
+            }
+        }
+
+    }
+
+    fun updateDoorDb(door: Door){
+        viewModelScope.launch {
+            try {
+                updateDoorDbByIdUseCase(door)
             }
             catch (e: Exception){
                 Log.e("ViewModel Update Error",e.toString())

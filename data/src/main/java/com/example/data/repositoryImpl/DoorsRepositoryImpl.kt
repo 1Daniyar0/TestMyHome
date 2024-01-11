@@ -3,6 +3,7 @@ package com.example.data.repositoryImpl
 import android.util.Log
 import com.example.data.remote.ApiClient
 import com.example.data.remote.ApiRoutes
+import com.example.domain.models.CamerasDataBaseModel
 import com.example.domain.models.Door
 import com.example.domain.models.DoorsDataBaseModel
 import com.example.domain.models.DoorsResponse
@@ -56,8 +57,13 @@ class DoorsRepositoryImpl:DoorsRepository {
         }
     }
 
-    override suspend fun updateDoorsDataInDb(data: DoorsDataBaseModel) {
-        TODO("Not yet implemented")
+    override suspend fun updateDoorsDataInDb(door: Door) {
+        val config = RealmConfiguration.create(schema = setOf(DoorsDataBaseModel::class))
+        val realm: Realm = Realm.open(config)
+        realm.write {
+            val cameraDb = query<DoorsDataBaseModel>("id == ${door.id}").find().first()
+            cameraDb.favorites = door.favorites!!
+        }
     }
 
     override suspend fun getDoorsFromDb(): List<Door> {

@@ -7,7 +7,7 @@ import com.example.domain.models.DoorsResponse
 interface DoorsRepository {
     suspend fun getDoorsApi(): DoorsResponse
     suspend fun fetchDoorsDataFromApi(data: List<Door>): Boolean
-    suspend fun updateDoorsDataInDb(data: DoorsDataBaseModel)
+    suspend fun updateDoorsDataInDb(door: Door)
     suspend fun getDoorsFromDb(): List<Door>
     suspend fun getDoorsList(): List<Door>?
 }
