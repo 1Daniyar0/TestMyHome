@@ -64,7 +64,6 @@ fun CamerasScreen(viewModel: MyHomeViewModel){
         viewModel.getCameras()
     }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +75,7 @@ fun CamerasScreen(viewModel: MyHomeViewModel){
            ListOfCameras(cameraListDb!!)
        }
         else{
-           ListOfCameras(listOf(Camera("","","",0,false,false)))
+
        }
 
 

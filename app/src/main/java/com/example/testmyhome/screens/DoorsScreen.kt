@@ -16,6 +16,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,18 +40,28 @@ import com.example.testmyhome.ui.theme.Typography
 
 
 @Composable
-fun DoorsScreen(){
+fun DoorsScreen(viewModel: MyHomeViewModel){
+
+    val doorResponse = viewModel.doorsLiveData.observeAsState()
+
+    LaunchedEffect(Unit){
+        viewModel.getDoors()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(PrimaryBackground)
             .padding(horizontal = 21.dp)
     ) {
-        val list = listOf(
-            Door("Door 1","https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png","0",0,false),
+        if (doorResponse.value != null){
+            val doorsList = doorResponse.value
+            ListOfDoors(doorsList!!)
+        }
+        else{
 
-        )
-        ListOfDoors(list)
+        }
+
     }
 }
 
@@ -121,6 +133,6 @@ fun DoorItem(item: Door){
 fun DoorsScreenPreview() {
     TestMyHomeTheme {
         val navController = rememberNavController()
-        DoorsScreen()
+
     }
 }

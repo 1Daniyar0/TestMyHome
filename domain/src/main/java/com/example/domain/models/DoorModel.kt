@@ -28,6 +28,6 @@ class DoorsRealmModel: RealmObject {
     var name: String  = ""
     var snapshot: String  = ""
     var room: String  = ""
-    var id: Int = 0
+    var id: String = ""
     var favorites: Boolean = false
 }

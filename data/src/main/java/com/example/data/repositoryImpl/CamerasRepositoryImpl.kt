@@ -33,6 +33,7 @@ class CamerasRepositoryImpl : CamerasRepository {
         }
         return null
     }
+
     override suspend fun getCamerasApi(): CamerasResponse = ApiClient.client.get(ApiRoutes.CAMERAS_GET).body()
 
 

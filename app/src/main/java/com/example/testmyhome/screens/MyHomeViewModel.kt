@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.Camera
 import com.example.domain.models.CamerasResponse
+import com.example.domain.models.Door
 import com.example.domain.models.DoorsResponse
 import com.example.domain.usecase.GetCamerasListUseCase
 import com.example.domain.usecase.GetDoorsUseCase
@@ -17,10 +18,10 @@ class MyHomeViewModel(
     private val getDoorsUseCase: GetDoorsUseCase,
 ): ViewModel() {
     private val _camerasLiveData = MutableLiveData<List<Camera>>()
-    private val _doorsLiveData = MutableLiveData<DoorsResponse>()
+    private val _doorsLiveData = MutableLiveData<List<Door>>()
 
-    val doorsLiveData: LiveData<DoorsResponse> = _doorsLiveData
     val camerasLiveData: LiveData<List<Camera>> = _camerasLiveData
+    val doorsLiveData: LiveData<List<Door>> = _doorsLiveData
 
     fun getCameras(){
         viewModelScope.launch {
@@ -29,7 +30,19 @@ class MyHomeViewModel(
                 _camerasLiveData.postValue(response!!)
             }
             catch (e: Exception){
-                Log.e("ViewModel Error",e.toString())
+                Log.e("ViewModel Camera Error",e.toString())
+            }
+        }
+    }
+
+    fun getDoors(){
+        viewModelScope.launch {
+            try {
+                val response = getDoorsUseCase()
+                _doorsLiveData.postValue(response!!)
+            }
+            catch (e: Exception){
+                Log.e("ViewModel Doors Error",e.toString())
             }
         }
     }

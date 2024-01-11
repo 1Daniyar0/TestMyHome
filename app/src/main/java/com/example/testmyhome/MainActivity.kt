@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
 fun MyNavGraph(navController: NavHostController,viewModel: MyHomeViewModel) {
     NavHost(navController = navController, startDestination = "camera") {
         composable("camera") { CamerasScreen(viewModel) }
-        //composable("door") { DoorsScreen() }
+        composable("door") { DoorsScreen(viewModel) }
     }
 }
 
