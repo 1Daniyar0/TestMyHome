@@ -62,7 +62,6 @@ fun CamerasScreen(viewModel: MyHomeViewModel){
 
     LaunchedEffect(Unit){
         viewModel.getCameras()
-
     }
 
 
@@ -72,15 +71,9 @@ fun CamerasScreen(viewModel: MyHomeViewModel){
             .background(PrimaryBackground)
             .padding(horizontal = 21.dp)
     ) {
-       if (cameraResponse.value?.data?.cameras != null){
-           val cameraList = cameraResponse.value?.data?.cameras
-           Log.d("Cmera", cameraList.toString())
-           LaunchedEffect(Unit){
-               //viewModel.addCamerasIntoDb(cameraList!!)
-           }
-
-           ListOfCameras(cameraList!!)
-
+       if (cameraResponse.value != null){
+           val cameraListDb = cameraResponse.value
+           ListOfCameras(cameraListDb!!)
        }
         else{
            ListOfCameras(listOf(Camera("","","",0,false,false)))
@@ -114,7 +107,7 @@ fun ListOfCameras(list: List<Camera>){
 
 @Composable
 fun CameraItem(item: Camera){
-    if (!item.room.isNullOrEmpty()){
+    if (item.room != null && item.room != "null"){
         Text(
             text = item.room!!,
             style = Typography.bodyLarge,
