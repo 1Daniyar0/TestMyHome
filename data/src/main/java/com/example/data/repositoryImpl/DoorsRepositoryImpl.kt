@@ -61,8 +61,9 @@ class DoorsRepositoryImpl:DoorsRepository {
         val config = RealmConfiguration.create(schema = setOf(DoorsDataBaseModel::class))
         val realm: Realm = Realm.open(config)
         realm.write {
-            val cameraDb = query<DoorsDataBaseModel>("id == ${door.id}").find().first()
-            cameraDb.favorites = door.favorites!!
+            val doorDb = query<DoorsDataBaseModel>("id == ${door.id}").find().first()
+            doorDb.favorites = door.favorites!!
+            doorDb.name = door.name!!
         }
     }
 

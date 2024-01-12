@@ -62,6 +62,7 @@ import com.example.testmyhome.ui.theme.SecondaryBackground
 import com.example.testmyhome.ui.theme.TestMyHomeTheme
 import com.example.testmyhome.ui.theme.Typography
 import org.koin.androidx.compose.koinViewModel
+import java.nio.file.WatchEvent
 import kotlin.math.roundToInt
 
 
@@ -103,7 +104,7 @@ fun DoorsScreen(viewModel: MyHomeViewModel){
 fun ListOfDoors(list: List<Door>,onFavoriteBtnClick: (Door) -> Unit,onConfirmDialogClick:(Door) -> Unit ){
     LazyColumn(
         verticalArrangement = Arrangement
-            .spacedBy(11.dp),
+            .spacedBy(8.dp),
         modifier = Modifier
             .padding(vertical = 8.dp)
             .fillMaxSize()
@@ -134,10 +135,13 @@ fun DoorItem(item: Door,onFavoriteBtnClick: (Door) -> Unit , onConfirmDialogClic
     if (dialogVisible){
         EditAlertDialog(
             item = item,
-            onDismissRequest = { dialogVisible = !dialogVisible },
+            onDismissRequest = {
+                dialogVisible = !dialogVisible
+                moved = !moved },
             onConfirmClick = {
                 onConfirmDialogClick(it)
-                dialogVisible = !dialogVisible}
+                dialogVisible = !dialogVisible
+                moved = !moved}
         )
     }
 
@@ -251,7 +255,7 @@ fun EditAlertDialog(item: Door,onDismissRequest: () -> Unit, onConfirmClick:(Doo
             colors = CardDefaults.cardColors(SecondaryBackground),
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
-            Text(text = "Label",
+            Text(text = stringResource(R.string.name_door),
                 style = Typography.bodyMedium,
                 modifier = Modifier
                     .padding(16.dp))
@@ -269,22 +273,30 @@ fun EditAlertDialog(item: Door,onDismissRequest: () -> Unit, onConfirmClick:(Doo
             Row(){
                 TextButton(onClick = {
                     updateItem.name = text
-                    onConfirmClick(updateItem)
-                }) {
+                    onConfirmClick(updateItem)},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
                     Text(text = "Сохранить",
                         style = Typography.bodyMedium,
                         color = ContentColor,
                         modifier = Modifier
-                            .padding(16.dp))
+                            .padding(16.dp)
+                    )
                 }
                 TextButton(onClick = {
-                    onDismissRequest()
-                }) {
+                    onDismissRequest()},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)) {
                     Text(text = "Отмена",
                         style = Typography.bodyMedium,
                         color = ContentColor,
                         modifier = Modifier
-                            .padding(16.dp))
+                            .padding(16.dp)
+
+                    )
                 }
             }
         }

@@ -4,5 +4,6 @@
     <string name="DoorsTitle">Двери</string>
     <string name="TopTitleText">Мой дом</string>
     <string name="Online">В сети</string>
+    <string name="name_door">Наименование двери</string>
 
 </resources>
